@@ -1,0 +1,14 @@
+{
+  "name": "ts-api-client-examples",
+  "version": "1.0.0",
+  "description": "An example of how to use the bricks in the ts-api-client libraries to build a sturdy house",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "scripts/test.sh"
+  },
+  "author": "Kael Shipman <kael.shipman@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "api-client-plumbing": "^1.0.0"
+  }
+}
