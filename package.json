@@ -1,28 +1,26 @@
 {
-  "name": "api-client-plumbing",
+  "name": "ts-api-client",
   "version": "1.0.0",
-  "description": "This library defines a set of fluent abstractions for building HTTP and SQL clients.",
-  "author": "Kael Shipman<kael.shipman@gmail.com>",
-  "homepage": "https://github.com/kael-shipman/ts-data-query-builder",
-  "bugs": {
-    "url": "https://github.com/kael-shipman/ts-data-query-builder/issues"
-  },
-  "contributors": "https://github.com/kael-shipman/ts-data-query-builder/graphs/contributors",
+  "description": "A mono-repo for managing development of my API Client libraries",
   "main": "dist/index.js",
-  "files": [
-    "dist/**/*"
-  ],
-  "license": "MIT",
+  "dependencies": {
+    "lerna": "^3.15.0"
+  },
+  "scripts": {
+    "test": "scripts/test.sh"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kael-shipman/ts-api-client-plumbing.git"
+    "url": "git+https://github.com/kael-shipman/ts-api-client.git"
   },
-  "dependencies": {
-    "ts-simple-interfaces": "^1.0.0",
-    "js-base64": "^2.5.1"
+  "keywords": [
+    "api",
+    "client"
+  ],
+  "author": "Kael Shipman <kael.shipman@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kael-shipman/ts-api-client/issues"
   },
-  "devDependencies": {
-    "@types/node": "^10.14.12",
-    "@types/js-base64": "^2.3.1"
-  }
+  "homepage": "https://github.com/kael-shipman/ts-api-client#readme"
 }
