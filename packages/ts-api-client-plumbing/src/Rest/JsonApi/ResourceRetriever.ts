@@ -9,6 +9,7 @@ import { QueryBuilder } from "../../QueryBuilder";
 import { BasicQueryAuthenticator } from "../BasicQueryAuthenticator";
 import { QueryConstructor } from "./QueryConstructor";
 import { QueryResponseParser } from "./QueryResponseParser";
+import { SimpleHttpRequestConfig } from "ts-simple-interfaces";
 
 export class ResourceRetriever<Resource extends ResourceInterface<string>> implements ResourceRetrieverInterface {
   protected queryBuilder: QueryBuilderInterface;
@@ -65,16 +66,56 @@ export class ResourceRetriever<Resource extends ResourceInterface<string>> imple
     }
   }
 
-  public get(): Promise<Resource> {
+  public get(): Promise<Array<Resource>> {
     return new Promise((resolve, reject) => {
-      const req = this.queryAuthenticator.authenticate(
+      const req = <SimpleHttpRequestConfig>this.queryAuthenticator.authenticate(
         this.queryConstructor.construct(this.value)
       );
-      console.log(req);
-      resolve(<Resource>{
-        type: this.resourceType,
-        id: "aaaaa",
-      });
+
+      if (!req.baseURL) {
+        console.log("No baseurl");
+      }
+
+      const page = this.value.pageNumber!;
+
+      let resource: Resource;
+      if (this.resourceType === "users") {
+        resource = <Resource>{
+          type: this.resourceType,
+          id: "aaaaa",
+          attributes: {
+            name: "John Richard",
+            email: "john.richard@gmail.com"
+          },
+          relationships: {
+            address: {
+              data: {
+                type: "addresses",
+                id: "abcde"
+              }
+            }
+          }
+        };
+      } else if (this.resourceType === "orders") {
+        resource = <Resource>{
+          type: this.resourceType,
+          id: "bbbbb",
+          attributes: {
+            quantity: 66,
+            price: 1.50
+          },
+        };
+      } else {
+        return reject(`Unknown resource type ${this.resourceType}`);
+      }
+
+      const count = page === 2 ? 1 : (page > 3 ? 0 : this.value.pageSize!);
+      const resources: Array<Resource> = [];
+      for (let i = 0; i < count; i++) {
+        resources.push(Object.assign({}, resource, { id: (page * this.value.pageSize!) + i*1 }));
+      }
+
+      resolve(resources);
     });
   }
 
