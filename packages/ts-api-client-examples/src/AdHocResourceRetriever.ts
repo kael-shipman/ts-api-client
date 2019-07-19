@@ -3,25 +3,24 @@ import {
   QueryAuthenticatorInterface,
   ResourceRetrieverInterface,
   QueryBuilderInterface,
-} from "../../Types";
-import { ResourceInterface } from "./Types";
-import { QueryBuilder } from "../../QueryBuilder";
-import { BasicQueryAuthenticator } from "../BasicQueryAuthenticator";
-import { QueryConstructor } from "./QueryConstructor";
-import { QueryResponseParser } from "./QueryResponseParser";
+  QueryBuilder,
+  Rest,
+} from "api-client-plumbing";
 import {
   SimpleHttpRequestConfig,
   SimpleHttpClientInterface,
-  SimpleHttpResponseInterface,
 } from "ts-simple-interfaces";
+import { AdHocQueryResponseParser } from "./AdHocQueryResponseParser";
 
-export class ResourceRetriever<
-  Resource extends ResourceInterface<string>
+declare interface AdHocResource {[key: string]: any}
+
+export class AdHocResourceRetriever<
+  Resource extends AdHocResource
 > implements ResourceRetrieverInterface {
   protected queryBuilder: QueryBuilderInterface;
   protected queryAuthenticator: QueryAuthenticatorInterface;
-  protected queryConstructor: QueryConstructor;
-  protected queryResponseParser: QueryResponseParser;
+  protected queryConstructor: Rest.JsonApi.QueryConstructor;
+  protected queryResponseParser: AdHocQueryResponseParser;
 
   public constructor(
     protected resourceType: string,
@@ -33,8 +32,8 @@ export class ResourceRetriever<
     deps?: {
       queryBuilder?: QueryBuilderInterface;
       queryAuthenticator?: QueryAuthenticatorInterface;
-      queryConstructor?: QueryConstructor;
-      queryResponseParser?: QueryResponseParser;
+      queryConstructor?: Rest.JsonApi.QueryConstructor;
+      queryResponseParser?: AdHocQueryResponseParser;
     },
     d?: Partial<QueryData>,
   ) {
@@ -59,17 +58,17 @@ export class ResourceRetriever<
       this.queryBuilder = new QueryBuilder(this.resourceType);
     }
     if (!this.queryAuthenticator) {
-      this.queryAuthenticator = new BasicQueryAuthenticator(
+      this.queryAuthenticator = new Rest.BasicQueryAuthenticator(
         this.apiKey,
         this.secret,
         this._oauthToken,
       );
     }
     if (!this.queryConstructor) {
-      this.queryConstructor = new QueryConstructor(this.baseUrl);
+      this.queryConstructor = new Rest.JsonApi.QueryConstructor(this.baseUrl);
     }
     if (!this.queryResponseParser) {
-      this.queryResponseParser = new QueryResponseParser();
+      this.queryResponseParser = new AdHocQueryResponseParser();
     }
   }
 
@@ -77,7 +76,7 @@ export class ResourceRetriever<
     const req = <SimpleHttpRequestConfig>this.queryAuthenticator.authenticate(
       this.queryConstructor.construct(this.value)
     );
-    return this.httpClient.request(req).then((res: SimpleHttpResponseInterface) => {
+    return this.httpClient.request<R>(req).then((res) => {
       return this.queryResponseParser.parse(res);
     });
   }
@@ -123,7 +122,7 @@ export class ResourceRetriever<
   }
 
   protected clone(builder: QueryBuilderInterface): ResourceRetrieverInterface {
-    return new ResourceRetriever<Resource>(
+    return new AdHocResourceRetriever(
       this.resourceType,
       this.apiKey,
       this.secret,
@@ -139,3 +138,4 @@ export class ResourceRetriever<
     );
   }
 }
+

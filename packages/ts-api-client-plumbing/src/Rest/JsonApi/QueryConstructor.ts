@@ -21,28 +21,7 @@ export class QueryConstructor implements QueryConstructorInterface {
     };
   }
 
-  /*
-    public get(): Promise<false|QueryResultInterface<object>> {
-
-        if (this._httpClient === null) {
-            throw new Error("Programmer: No HTTP client set. You must set an HTTP client for this ApiQuery instance before attempting to use it. Usually this is done near instantiation of the ApiQuery object.");
-        }
-
-        if (this._done) {
-        }
-
-        const t = this;
-        return this._httpClient.request(this.composeRequest())
-        .then(function(response: AxiosResponse<object>): QueryResultInterface<object> {
-            return new QueryResult(t, response.data);
-        })
-        .catch(function(e: Error) {
-            throw e;
-        });
-    }
-   */
-
-  protected composeRequestParams(data: QueryData): object {
+  protected composeRequestParams(data: QueryData): JsonApiParams {
     let params: JsonApiParams = {};
 
     params["page[size]"] = data.pageSize || 30;

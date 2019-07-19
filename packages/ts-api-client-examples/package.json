@@ -9,6 +9,8 @@
   "author": "Kael Shipman <kael.shipman@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "api-client-plumbing": "^1.0.0"
+    "api-client-plumbing": "^1.0.0",
+    "simple-http-client-rpn": "^1.0.0",
+    "ts-simple-interfaces": "^1.0.0"
   }
 }

@@ -50,7 +50,7 @@ const ordersForUsersNamedJohn: Array<RelatedResourceMap<UserInterface>> = [];
 const gatherData = function(q: plumbing.ResourceRetrieverInterface, n: number): Promise<void> {
   return q.get()
   .then((users: Array<UserInterface>) => {
-    if (users.length > 0) {
+    if (users.length > 0 && n < 2) {
       for (let i = 0; i < users.length; i++) {
         ordersForUsersNamedJohn.push({
           resource: users[i],
@@ -78,13 +78,13 @@ const showOrders = function(n: number): Promise<void> {
   console.log(`Orders for user ${map.resource.attributes.name}`);
   console.log();
   return map.q.get().then((orders: Array<OrderInterface>) => {
-    if (orders.length === 0) {
+    if (orders.length === 0 || map.n >= 2) {
       console.log("No more orders to display for this user.");
     } else {
       // List orders on screen
       for (let i = 0; i < orders.length; i++) {
         console.log(
-          `  ${map.n * 3 + 1}. ${orders[i].attributes.quantity}@${orders[i].attributes.price}`
+          `  ${map.n * 3 + i + 1}. ${orders[i].quantity}@${orders[i].price}`
         );
       }
 
@@ -105,7 +105,7 @@ const ask = function(): Promise<string> {
 const askLoop = function() {
   ask()
   .then((n) => {
-    showOrders(Number(n));
+    showOrders(Number(n)-1);
     askLoop();
   });
 }
@@ -126,5 +126,6 @@ gatherData(usersLikeJohn, 0)
   //askLoop();
 
   showOrders(1);
+  console.log();
 });
 
