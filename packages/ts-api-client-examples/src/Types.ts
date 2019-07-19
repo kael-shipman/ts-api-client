@@ -15,18 +15,18 @@ export interface UserInterface extends plumbing.Rest.JsonApi.ResourceInterface<"
 export interface AddressInterface extends plumbing.Rest.JsonApi.ResourceInterface<"addresses"> {
   attributes: {
     street1: string;
-    street2: string;
+    street2?: string|null;
     city: string;
     state: string;
     zip: string;
   }
 }
 
-export interface OrderInterface extends plumbing.Rest.JsonApi.ResourceInterface<"orders"> {
-  attributes: {
-    quantity: number;
-    price: number;
-  }
+export interface OrderInterface {
+  type: "orders";
+  quantity: number;
+  price: number;
+  ownerId: string;
 }
 
 export type Resources = UserInterface|AddressInterface|OrderInterface;
