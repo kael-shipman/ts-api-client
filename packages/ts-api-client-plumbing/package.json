@@ -18,7 +18,7 @@
     "url": "https://github.com/kael-shipman/ts-api-client-plumbing.git"
   },
   "dependencies": {
-    "ts-simple-interfaces": "^1.0.0",
+    "ts-simple-interfaces": "^0.1.1",
     "js-base64": "^2.5.1"
   },
   "devDependencies": {

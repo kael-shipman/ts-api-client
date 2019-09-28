@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "api-client-plumbing": "^1.0.0",
-    "simple-http-client-rpn": "^1.0.0",
-    "ts-simple-interfaces": "^1.0.0"
+    "simple-http-client-rpn": "^0.1.3",
+    "ts-simple-interfaces": "^0.1.1"
   }
 }
