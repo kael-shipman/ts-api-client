@@ -14,9 +14,8 @@ import {
   SimpleHttpResponseInterface,
 } from "ts-simple-interfaces";
 
-export class ResourceRetriever<
-  Resource extends ResourceData<string>
-> implements ResourceRetrieverInterface<Resource> {
+export class ResourceRetriever<Resource extends ResourceData<string>>
+implements ResourceRetrieverInterface<Resource> {
   protected queryBuilder: QueryBuilderInterface;
   protected queryAuthenticator: QueryAuthenticatorInterface;
   protected queryConstructor: QueryConstructor;
