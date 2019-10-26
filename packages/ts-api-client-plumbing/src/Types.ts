@@ -2,7 +2,7 @@
  * QueryExecutorInterface uses QueryData to compose a query, send it to a datasource, and
  * retrieve a result.
  *
- * Implicit in this is the need to a) Build the query (see `QueryBuidlderInterface`); b) Format
+ * Implicit in this is the need to a) Build the query (see `QueryBuilderInterface`); b) Format
  * the query correctly (see `QueryConstructorInterface`); c) authenticate the query (see
  * `QueryAuthenticatorInterface`); d) address the datasource correctly; and e) parse the query
  * response (see `QueryResponseParserInterface`).
@@ -14,14 +14,14 @@
  * input parameters and output types.
  */
 
-export interface ResourceRetrieverInterface extends QueryBuilderInterface {
-  withId: (id: string|null) =>  ResourceRetrieverInterface;
-  filter: (query: unknown|null) =>  ResourceRetrieverInterface;
-  include: (include: string) =>  ResourceRetrieverInterface;
-  sort: (sort: string, dir?: "asc"|"desc") =>  ResourceRetrieverInterface;
-  pageSize: (pageSize: number) =>  ResourceRetrieverInterface;
-  pageNumber: (pageNumber: number) =>  ResourceRetrieverInterface;
-  get: () => Promise<unknown>;
+export interface ResourceRetrieverInterface<T extends unknown> extends QueryBuilderInterface {
+  withId: (id: string|null) =>  ResourceRetrieverInterface<T>;
+  filter: (query: unknown|null) =>  ResourceRetrieverInterface<T>;
+  include: (include: string) =>  ResourceRetrieverInterface<T>;
+  sort: (sort: string, dir?: "asc"|"desc") =>  ResourceRetrieverInterface<T>;
+  pageSize: (pageSize: number) =>  ResourceRetrieverInterface<T>;
+  pageNumber: (pageNumber: number) =>  ResourceRetrieverInterface<T>;
+  get: <U extends T|Array<T>>() => Promise<unknown>;
 }
 
 
