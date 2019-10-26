@@ -16,7 +16,7 @@ declare interface AdHocResource {[key: string]: any}
 
 export class AdHocResourceRetriever<
   Resource extends AdHocResource
-> implements ResourceRetrieverInterface {
+> implements ResourceRetrieverInterface<Resource> {
   protected queryBuilder: QueryBuilderInterface;
   protected queryAuthenticator: QueryAuthenticatorInterface;
   protected queryConstructor: Rest.JsonApi.QueryConstructor;
@@ -93,27 +93,27 @@ export class AdHocResourceRetriever<
 
 
 
-  public withId(id: string|null): ResourceRetrieverInterface {
+  public withId(id: string|null): ResourceRetrieverInterface<Resource> {
     return this.clone(this.queryBuilder.withId(id));
   }
 
-  public filter(filter: string|null): ResourceRetrieverInterface {
+  public filter(filter: string|null): ResourceRetrieverInterface<Resource> {
     return this.clone(this.queryBuilder.filter(filter));
   }
 
-  public include(include: string): ResourceRetrieverInterface {
+  public include(include: string): ResourceRetrieverInterface<Resource> {
     return this.clone(this.queryBuilder.include(include));
   }
 
-  public sort(sort: string, dir: "asc"|"desc"): ResourceRetrieverInterface {
+  public sort(sort: string, dir: "asc"|"desc"): ResourceRetrieverInterface<Resource> {
     return this.clone(this.queryBuilder.sort(sort, dir));
   }
 
-  public pageNumber(pageNumber: number): ResourceRetrieverInterface {
+  public pageNumber(pageNumber: number): ResourceRetrieverInterface<Resource> {
     return this.clone(this.queryBuilder.pageNumber(pageNumber));
   }
 
-  public pageSize(pageSize: number): ResourceRetrieverInterface {
+  public pageSize(pageSize: number): ResourceRetrieverInterface<Resource> {
     return this.clone(this.queryBuilder.pageSize(pageSize));
   }
 
@@ -121,7 +121,7 @@ export class AdHocResourceRetriever<
     return this.queryBuilder.value;
   }
 
-  protected clone(builder: QueryBuilderInterface): ResourceRetrieverInterface {
+  protected clone(builder: QueryBuilderInterface): ResourceRetrieverInterface<Resource> {
     return new AdHocResourceRetriever(
       this.resourceType,
       this.apiKey,

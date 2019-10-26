@@ -1,18 +1,18 @@
 import * as plumbing from "api-client-plumbing";
 
-export interface UserInterface extends plumbing.Rest.JsonApi.ResourceInterface<"users"> {
+export interface UserInterface extends plumbing.Rest.JsonApi.ResourceData<"users"> {
   attributes: {
     name: string;
     email: string;
   },
   relationships: {
     address: {
-      data: plumbing.Rest.JsonApi.ResourceInterface<"addresses">|null;
+      data: plumbing.Rest.JsonApi.ResourceData<"addresses">|null;
     }
   }
 }
 
-export interface AddressInterface extends plumbing.Rest.JsonApi.ResourceInterface<"addresses"> {
+export interface AddressInterface extends plumbing.Rest.JsonApi.ResourceData<"addresses"> {
   attributes: {
     street1: string;
     street2?: string|null;
@@ -33,7 +33,7 @@ export type Resources = UserInterface|AddressInterface|OrderInterface;
 
 export interface RelatedResourceMap<Resource extends Resources> {
   resource: Resource;
-  q: plumbing.ResourceRetrieverInterface;
+  q: plumbing.ResourceRetrieverInterface<Resource>;
   n: number;
 }
 
