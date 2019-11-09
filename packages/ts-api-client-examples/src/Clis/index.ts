@@ -1,1 +1,1 @@
-export { UsersCli } from "./UsersCli";
+export { MainCli } from "./MainCli";

@@ -4,7 +4,7 @@ import { MySDK } from "../MySDK";
 import { Prompt } from "prompt-sync";
 import * as plumbing from "api-client-plumbing";
 
-export class UsersCli extends AbstractCli {
+export class MainCli extends AbstractCli {
   public constructor(protected readline: Prompt, protected api: MySDK) {
     super(readline, false);
   }
