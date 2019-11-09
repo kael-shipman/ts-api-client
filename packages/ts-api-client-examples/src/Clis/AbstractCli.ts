@@ -1,6 +1,6 @@
 import { Prompt } from "prompt-sync";
 
-export abstract class AbstractMenu {
+export abstract class AbstractCli {
   protected abstract choices: { [i: number]: string };
 
   public constructor(protected readline: Prompt, protected isChild: boolean) {

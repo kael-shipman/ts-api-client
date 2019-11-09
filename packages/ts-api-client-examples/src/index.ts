@@ -1,5 +1,5 @@
 //import * as plumbing from "api-client-plumbing";
-import { UsersMenu } from "./Menus";
+import { UsersCli } from "./Clis";
 /*
 import {
   UserInterface,
@@ -39,8 +39,8 @@ import { MySDK } from "./MySDK";
 
 // First we instantiate the SDK using our api key and secret
 const api = new MySDK("abcde12345", "12345abcde");
-const menu = new UsersMenu(Prompt(), api);
-menu.showMenu();
+const cli = new UsersCli(Prompt(), api);
+cli.showMenu();
 
 
 /*
