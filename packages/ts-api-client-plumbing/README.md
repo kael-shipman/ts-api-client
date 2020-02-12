@@ -9,11 +9,23 @@ Data Query Plumbing
 > code in this repo is just copy-pasted from that repo.
 >
 
+>
+> **SECOND WARNING**
+>
+> Even in its final form, this code will be somewhat difficult to understand it is a plumbing
+> package, meaning that it is intended to be a low- to mid-level abstraction, and is intended to
+> be used to compose higher-level abstractions.
+>
+> I'll attempt to include documentation in each module about what it's role is and how it's
+> intended to be used to build a bigger, easier to use system.
+>
+
 This library is more of a plumbing library than an end-user library. It provides abstractions for
 defining "fluent" query builders for HTTP, SQL and other datasources.
 
 It focuses exclusively on "filter" queries, i.e., HTTP "GET" and SQL "SELECT". It is intended
-to be immediately useful in other systems like data backends and HTTP clients.
+to be immediately useful in other systems like data backends and HTTP clients and is NOT intended
+to be used directly by end-users.
 
 ## Usage
 

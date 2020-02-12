@@ -11,7 +11,7 @@ import { SimpleHttpClientInterface } from "ts-simple-interfaces";
 
 export class MySDK {
   private _users: plumbing.Rest.JsonApi.ResourceRetriever<UserInterface>;
-  private _legalEntities: plumbing.Rest.JsonApi.ResourceRetriever<AddressInterface>;
+  private _addresses: plumbing.Rest.JsonApi.ResourceRetriever<AddressInterface>;
   private _orders: AdHocResourceRetriever<OrderInterface>;
   protected _oauthToken: string|null = null;
   protected httpClient: SimpleHttpClientInterface;
@@ -36,7 +36,7 @@ export class MySDK {
       httpClient?: SimpleHttpClientInterface;
     }
   ) {
-    //const subdomain = env === "prod" ? "" : `${env}.`;
+    const subdomain = env === "prod" ? "" : `${env}.`;
 
     // We'll definitely need an HTTP Client, so if we haven't passed one as a dependency, we need
     // to instantiate one here.
@@ -53,19 +53,19 @@ export class MySDK {
       this.apiKey,
       this.secret || null,
       this._oauthToken,
-      //`https://${subdomain}my-api.com/v1`,
-      `https://my-json-server.typicode.com/kael-shipman/ts-api-client`,
+      `http://${subdomain}here.me:3000/v1`,
+      //`https://my-json-server.typicode.com/kael-shipman/ts-api-client`,
       this.httpClient,
       deps
     );
 
-    this._legalEntities = new plumbing.Rest.JsonApi.ResourceRetriever<AddressInterface>(
-      "legal-entities",
+    this._addresses = new plumbing.Rest.JsonApi.ResourceRetriever<AddressInterface>(
+      "addresses",
       this.apiKey,
       this.secret || null,
       this._oauthToken,
-      //`https://${subdomain}my-api.com/v1`,
-      `https://my-json-server.typicode.com/kael-shipman/ts-api-client`,
+      `http://${subdomain}here.me:3000/v1`,
+      //`https://my-json-server.typicode.com/kael-shipman/ts-api-client`,
       this.httpClient,
       deps
     );
@@ -75,8 +75,8 @@ export class MySDK {
       this.apiKey,
       this.secret || null,
       this._oauthToken,
-      //`https://${subdomain}my-api.com/v2`,
-      `https://my-json-server.typicode.com/kael-shipman/ts-api-client`,
+      `http://${subdomain}here.me:3000/v2`,
+      //`https://my-json-server.typicode.com/kael-shipman/ts-api-client`,
       this.httpClient,
       deps
     );
@@ -87,15 +87,15 @@ export class MySDK {
   set oauthToken(token: string|null) {
     this._oauthToken = token;
     this._users.oauthToken = token;
-    this._legalEntities.oauthToken = token;
+    this._addresses.oauthToken = token;
     this._orders.oauthToken = token;
   }
 
   get users() {
     return this._users;
   }
-  get legalEntities() {
-    return this._legalEntities;
+  get addresses() {
+    return this._addresses;
   }
   get orders() {
     return this._orders;

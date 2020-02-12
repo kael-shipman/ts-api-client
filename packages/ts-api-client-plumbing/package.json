@@ -1,6 +1,6 @@
 {
   "name": "api-client-plumbing",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "This library defines a set of fluent abstractions for building HTTP and SQL clients.",
   "author": "Kael Shipman<kael.shipman@gmail.com>",
   "homepage": "https://github.com/kael-shipman/ts-data-query-builder",
@@ -18,11 +18,10 @@
     "url": "https://github.com/kael-shipman/ts-api-client-plumbing.git"
   },
   "dependencies": {
-    "ts-simple-interfaces": "^0.1.1",
+    "@types/node": "^10.14.12",
+    "@types/js-base64": "^2.3.1",
+    "ts-simple-interfaces": "^0.2.3",
     "js-base64": "^2.5.1"
   },
-  "devDependencies": {
-    "@types/node": "^10.14.12",
-    "@types/js-base64": "^2.3.1"
-  }
+  "devDependencies": {}
 }

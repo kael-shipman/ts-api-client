@@ -6,8 +6,8 @@ export interface UserInterface extends plumbing.Rest.JsonApi.ResourceData<"users
     email: string;
   },
   relationships: {
-    address: {
-      data: plumbing.Rest.JsonApi.ResourceData<"addresses">|null;
+    addresses: null | {
+      data: Array<plumbing.Rest.JsonApi.ResourceData<"addresses">>;
     }
   }
 }

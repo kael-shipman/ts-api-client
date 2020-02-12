@@ -4,14 +4,14 @@ import {
 } from "../../Types";
 import { JsonApiParams, } from "./Types";
 import {
-  SimpleHttpRequestConfig,
+  SimpleHttpClientRequestConfig,
 } from "ts-simple-interfaces";
 
 export class QueryConstructor implements QueryConstructorInterface {
   public constructor(protected baseUrl: string) {
   }
 
-  public construct(data: QueryData): SimpleHttpRequestConfig {
+  public construct(data: QueryData): SimpleHttpClientRequestConfig {
     return {
       method: "GET",
       baseURL: this.baseUrl,

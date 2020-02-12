@@ -1,0 +1,10 @@
+{
+  "webservice": {
+    "listeners": [ [ 3000, "localhost" ] ]
+  },
+  "logger": {
+    "logLevel": "debug",
+    "logFilePath": null
+  }
+}
+

@@ -2,7 +2,7 @@ import {
   BasicQueryAuthenticatorInterface
 } from "./Types";
 import {
-  SimpleHttpRequestConfig
+  SimpleHttpClientRequestConfig
 } from "ts-simple-interfaces";
 import { Base64 } from "js-base64";
 
@@ -22,7 +22,7 @@ export class BasicQueryAuthenticator implements BasicQueryAuthenticatorInterface
     this._oauthToken = token;
   }
 
-  authenticate(requestConfig: SimpleHttpRequestConfig): SimpleHttpRequestConfig {
+  authenticate(requestConfig: SimpleHttpClientRequestConfig): SimpleHttpClientRequestConfig {
     if (!requestConfig.headers) {
       requestConfig.headers = {};
     }

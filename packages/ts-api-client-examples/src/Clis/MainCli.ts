@@ -31,8 +31,8 @@ export class MainCli extends AbstractCli {
       const users: { [id: string] : UserInterface } = {};
       let page: number = 1;
       let usersQuery = this.api.users
-        .filter(JSON.stringify(["name", "like", `%${search}%`]))
-        .include("address")
+        .filter(JSON.stringify(["name", "like", `${search}`]))
+        .include("addresses")
         .pageSize(3);
 
       let errorCount = 0;
@@ -52,16 +52,22 @@ export class MainCli extends AbstractCli {
               users[u.id.substr(-8)] = u;
 
               // This is to demonstrate getting included resources, in this case addresses
-              const addr = u.relationships.address.data === null
+              const addrs = u.relationships.addresses === null
                 ? null
-                : <AddressInterface> res.included!.find((r) => {
-                  return r.type === "addresses" && r.id === u.relationships.address.data!.id;
+                : <Array<AddressInterface>> res.included!.filter((r) => {
+                  return r.type === "addresses" &&
+                    u.relationships.addresses !== null &&
+                    u.relationships.addresses.data.find((a) => r.id === a.id);
                 });
 
               // Dump complex data from the query for each user record
               console.log(
-                `${u.id.substr(-8)}: ${u.attributes.name} ` +
-                `(at ${addr ? addr.attributes.zip : "unknown"})`
+                `${u.id}: ${u.attributes.name} ` +
+                `(at zipcodes ${
+                  (addrs && addrs.length > 0)
+                    ? addrs.map((a) => a.attributes.zip).join(", ")
+                    : "unknown"
+                })`
               );
             }
 

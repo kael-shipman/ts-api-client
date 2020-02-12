@@ -9,9 +9,9 @@ import { BasicQueryAuthenticator } from "../BasicQueryAuthenticator";
 import { QueryConstructor } from "./QueryConstructor";
 import { QueryResponseParser } from "./QueryResponseParser";
 import {
-  SimpleHttpRequestConfig,
+  SimpleHttpClientRequestConfig,
   SimpleHttpClientInterface,
-  SimpleHttpResponseInterface,
+  SimpleHttpClientResponseInterface,
 } from "ts-simple-interfaces";
 
 export class ResourceRetriever<Resource extends ResourceData<string>>
@@ -72,10 +72,10 @@ implements ResourceRetrieverInterface<Resource> {
   }
 
   public get<R extends ResponseData<Resource["type"]>>(): Promise<Document<R>> {
-    const req = <SimpleHttpRequestConfig>this.queryAuthenticator.authenticate(
+    const req = <SimpleHttpClientRequestConfig>this.queryAuthenticator.authenticate(
       this.queryConstructor.construct(this.value)
     );
-    return this.httpClient.request(req).then((res: SimpleHttpResponseInterface) => {
+    return this.httpClient.request(req).then((res: SimpleHttpClientResponseInterface) => {
       return this.queryResponseParser.parse(res);
     });
   }

@@ -48,7 +48,7 @@ export type Document<R extends ResponseData<string>> = SuccessDocument<R>|ErrorD
 export const isSuccess = function<R extends ResponseData<string>>(
   doc: any
 ): doc is SuccessDocument<R> {
-  return typeof doc.errors === "undefined";
+  return typeof doc.errors === "undefined" && typeof doc.data !== "undefined";
 }
 
 // More specific version of ResourceRetriever Interface

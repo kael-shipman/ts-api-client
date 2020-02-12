@@ -7,7 +7,7 @@ import {
   Rest,
 } from "api-client-plumbing";
 import {
-  SimpleHttpRequestConfig,
+  SimpleHttpClientRequestConfig,
   SimpleHttpClientInterface,
 } from "ts-simple-interfaces";
 import { AdHocQueryResponseParser } from "./AdHocQueryResponseParser";
@@ -73,7 +73,7 @@ export class AdHocResourceRetriever<
   }
 
   public get<R extends Resource|Array<Resource>>(): Promise<R> {
-    const req = <SimpleHttpRequestConfig>this.queryAuthenticator.authenticate(
+    const req = <SimpleHttpClientRequestConfig>this.queryAuthenticator.authenticate(
       this.queryConstructor.construct(this.value)
     );
     return this.httpClient.request<R>(req).then((res) => {
