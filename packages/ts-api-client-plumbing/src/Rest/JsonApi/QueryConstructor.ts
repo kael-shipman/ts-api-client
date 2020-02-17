@@ -25,7 +25,7 @@ export class QueryConstructor implements QueryConstructorInterface {
     let params: JsonApiParams = {};
 
     params["page[size]"] = data.pageSize || 30;
-    params["page[number]"] = data.pageNumber || 0;
+    params["page[number]"] = data.pageNumber || 1;
 
     if (data.include.length > 0) {
       params.include = data.include.join(",");
