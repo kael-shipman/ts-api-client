@@ -1,5 +1,5 @@
-import { QueryAuthenticatorInterface, } from "../Types";
-import { SimpleHttpClientRequestConfig, } from "ts-simple-interfaces";
+import { QueryAuthenticatorInterface } from "../Types";
+import { SimpleHttpClientRequestConfig } from "ts-simple-interfaces";
 
 /**
  * An extension of the QueryAuthenticatorInterface which specifies the input and output types
@@ -8,4 +8,3 @@ import { SimpleHttpClientRequestConfig, } from "ts-simple-interfaces";
 export interface BasicQueryAuthenticatorInterface extends QueryAuthenticatorInterface {
   authenticate: (requestConfig: SimpleHttpClientRequestConfig) => SimpleHttpClientRequestConfig;
 }
-

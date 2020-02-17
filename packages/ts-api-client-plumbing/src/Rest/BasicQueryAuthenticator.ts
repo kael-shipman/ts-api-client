@@ -1,9 +1,5 @@
-import {
-  BasicQueryAuthenticatorInterface
-} from "./Types";
-import {
-  SimpleHttpClientRequestConfig
-} from "ts-simple-interfaces";
+import { BasicQueryAuthenticatorInterface } from "./Types";
+import { SimpleHttpClientRequestConfig } from "ts-simple-interfaces";
 import { Base64 } from "js-base64";
 
 /**
@@ -14,11 +10,11 @@ import { Base64 } from "js-base64";
 export class BasicQueryAuthenticator implements BasicQueryAuthenticatorInterface {
   public constructor(
     protected apiKey: string,
-    protected secret?: string|null,
-    protected _oauthToken?: string|null
-  ) { }
+    protected secret?: string | null,
+    protected _oauthToken?: string | null
+  ) {}
 
-  set oauthToken(token: string|null) {
+  set oauthToken(token: string | null) {
     this._oauthToken = token;
   }
 
@@ -33,7 +29,7 @@ export class BasicQueryAuthenticator implements BasicQueryAuthenticatorInterface
       }
     }
     requestConfig.headers.authorization = [
-      "Basic " + Base64.encode(`${this.apiKey}:${this.secret}`)
+      "Basic " + Base64.encode(`${this.apiKey}:${this.secret}`),
     ];
     if (this._oauthToken) {
       requestConfig.headers.authorization.push(`Bearer ${this._oauthToken}`);

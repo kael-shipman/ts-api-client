@@ -15,20 +15,19 @@
  */
 
 export interface ResourceRetrieverInterface<T extends unknown> extends QueryBuilderInterface {
-  withId: (id: string|null) =>  ResourceRetrieverInterface<T>;
-  filter: (query: unknown|null) =>  ResourceRetrieverInterface<T>;
-  include: (include: string) =>  ResourceRetrieverInterface<T>;
-  sort: (sort: string, dir?: "asc"|"desc") =>  ResourceRetrieverInterface<T>;
-  pageSize: (pageSize: number) =>  ResourceRetrieverInterface<T>;
-  pageNumber: (pageNumber: number) =>  ResourceRetrieverInterface<T>;
-  get: <U extends T|Array<T>>() => Promise<unknown>;
+  withId: (id: string | null) => ResourceRetrieverInterface<T>;
+  filter: (query: unknown | null) => ResourceRetrieverInterface<T>;
+  include: (include: string) => ResourceRetrieverInterface<T>;
+  sort: (sort: string, dir?: "asc" | "desc") => ResourceRetrieverInterface<T>;
+  pageSize: (pageSize: number) => ResourceRetrieverInterface<T>;
+  pageNumber: (pageNumber: number) => ResourceRetrieverInterface<T>;
+  get: <U extends T | Array<T>>() => Promise<unknown>;
 }
-
 
 /**
  * QueryBuilderInterface defines a query builder that supports all the trappings of a
  * modern query system -- `withId` is used to get a resource by id; `filter` is used to filter
- * the resources set; `include` is used to include related resources; `sort` to order the set; 
+ * the resources set; `include` is used to include related resources; `sort` to order the set;
  * `pageSize` to set the maximum number of results to be returned; and `pageNumber` to specify
  * the offset of results to return.
  *
@@ -39,33 +38,33 @@ export interface ResourceRetrieverInterface<T extends unknown> extends QueryBuil
  * concrete implementations consider enforcing immutability and instead return clones,
  * such that a given query may be saved and branched (for example, to get further pages).
  */
-export interface  QueryBuilderInterface {
+export interface QueryBuilderInterface {
   readonly value: QueryData;
-  withId: (id: string|null) =>  QueryBuilderInterface;
-  filter: (query: unknown|null) =>  QueryBuilderInterface;
-  include: (include: string) =>  QueryBuilderInterface;
-  sort: (sort: string, dir?: "asc"|"desc") =>  QueryBuilderInterface;
-  pageSize: (pageSize: number) =>  QueryBuilderInterface;
-  pageNumber: (pageNumber: number) =>  QueryBuilderInterface;
+  withId: (id: string | null) => QueryBuilderInterface;
+  filter: (query: unknown | null) => QueryBuilderInterface;
+  include: (include: string) => QueryBuilderInterface;
+  sort: (sort: string, dir?: "asc" | "desc") => QueryBuilderInterface;
+  pageSize: (pageSize: number) => QueryBuilderInterface;
+  pageNumber: (pageNumber: number) => QueryBuilderInterface;
 }
 
 /**
  * The basic data that comprises a given data query (GET request over HTTP or SELECT request in SQL)
  */
 export interface QueryData {
-  id: string|null;
+  id: string | null;
   resourceType: string;
-  filter: unknown|null;
+  filter: unknown | null;
   include: string[];
   sort: SortSpec[];
-  pageSize: number|null;
-  pageNumber: number|null;
+  pageSize: number | null;
+  pageNumber: number | null;
 }
 
 /**
  * Data describing a parameter on which to sort results
  */
-export type SortSpec = [string, "asc"|"desc"];
+export type SortSpec = [string, "asc" | "desc"];
 
 /**
  * An interface describing an object which can construct a query from QueryData. This is
@@ -91,4 +90,3 @@ export interface QueryAuthenticatorInterface {
 export interface QueryResponseParserInterface {
   parse: (response: unknown) => unknown;
 }
-

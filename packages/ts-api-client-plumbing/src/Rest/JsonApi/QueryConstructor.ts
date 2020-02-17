@@ -1,15 +1,9 @@
-import {
-  QueryData,
-  QueryConstructorInterface,
-} from "../../Types";
-import { JsonApiParams, } from "./Types";
-import {
-  SimpleHttpClientRequestConfig,
-} from "ts-simple-interfaces";
+import { QueryData, QueryConstructorInterface } from "../../Types";
+import { JsonApiParams } from "./Types";
+import { SimpleHttpClientRequestConfig } from "ts-simple-interfaces";
 
 export class QueryConstructor implements QueryConstructorInterface {
-  public constructor(protected baseUrl: string) {
-  }
+  public constructor(protected baseUrl: string) {}
 
   public construct(data: QueryData): SimpleHttpClientRequestConfig {
     return {
@@ -30,7 +24,7 @@ export class QueryConstructor implements QueryConstructorInterface {
     if (data.include.length > 0) {
       params.include = data.include.join(",");
     }
-    if (data.sort.length > 0 ) {
+    if (data.sort.length > 0) {
       let jsonApiSort = [];
       for (let s of data.sort) {
         jsonApiSort.push(s[1] === "desc" ? `-${s[0]}` : s[0]);
@@ -41,7 +35,10 @@ export class QueryConstructor implements QueryConstructorInterface {
       if (typeof data.filter === "string") {
         params.filter = data.filter;
       } else {
-        throw new Error("Expecting 'filter' parameter to be a string, but instead it is a(n) " + (typeof data.filter));
+        throw new Error(
+          "Expecting 'filter' parameter to be a string, but instead it is a(n) " +
+            typeof data.filter
+        );
       }
     }
 
@@ -50,9 +47,7 @@ export class QueryConstructor implements QueryConstructorInterface {
 
   protected composeRequestHeaders(data: QueryData): any {
     return {
-      Accept: "application/vnd.api+json"
-    }
+      Accept: "application/vnd.api+json",
+    };
   }
 }
-
-

@@ -1,8 +1,4 @@
-import {
-  QueryData,
-  QueryAuthenticatorInterface,
-  QueryBuilderInterface,
-} from "../../Types";
+import { QueryData, QueryAuthenticatorInterface, QueryBuilderInterface } from "../../Types";
 import { ResourceRetrieverInterface, ResourceData, ResponseData, Document } from "./Types";
 import { QueryBuilder } from "../../QueryBuilder";
 import { BasicQueryAuthenticator } from "../BasicQueryAuthenticator";
@@ -15,7 +11,7 @@ import {
 } from "ts-simple-interfaces";
 
 export class ResourceRetriever<Resource extends ResourceData<string>>
-implements ResourceRetrieverInterface<Resource> {
+  implements ResourceRetrieverInterface<Resource> {
   protected queryBuilder: QueryBuilderInterface;
   protected queryAuthenticator: QueryAuthenticatorInterface;
   protected queryConstructor: QueryConstructor;
@@ -24,8 +20,8 @@ implements ResourceRetrieverInterface<Resource> {
   public constructor(
     protected resourceType: string,
     protected apiKey: string,
-    protected secret: string|null,
-    protected _oauthToken: string|null,
+    protected secret: string | null,
+    protected _oauthToken: string | null,
     protected baseUrl: string,
     protected httpClient: SimpleHttpClientInterface,
     deps?: {
@@ -34,7 +30,7 @@ implements ResourceRetrieverInterface<Resource> {
       queryConstructor?: QueryConstructor;
       queryResponseParser?: QueryResponseParser;
     },
-    d?: Partial<QueryData>,
+    d?: Partial<QueryData>
   ) {
     // If we're injecting dependencies, use those
     if (deps) {
@@ -60,7 +56,7 @@ implements ResourceRetrieverInterface<Resource> {
       this.queryAuthenticator = new BasicQueryAuthenticator(
         this.apiKey,
         this.secret,
-        this._oauthToken,
+        this._oauthToken
       );
     }
     if (!this.queryConstructor) {
@@ -72,15 +68,15 @@ implements ResourceRetrieverInterface<Resource> {
   }
 
   public get<R extends ResponseData<Resource["type"]>>(): Promise<Document<R>> {
-    const req = <SimpleHttpClientRequestConfig>this.queryAuthenticator.authenticate(
-      this.queryConstructor.construct(this.value)
+    const req = <SimpleHttpClientRequestConfig>(
+      this.queryAuthenticator.authenticate(this.queryConstructor.construct(this.value))
     );
     return this.httpClient.request(req).then((res: SimpleHttpClientResponseInterface) => {
       return this.queryResponseParser.parse(res);
     });
   }
 
-  set oauthToken(token: string|null) {
+  set oauthToken(token: string | null) {
     this._oauthToken = token;
 
     // Have to sort of guess here, since this isn't guaranteed to exist
@@ -89,14 +85,11 @@ implements ResourceRetrieverInterface<Resource> {
     }
   }
 
-
-
-
-  public withId(id: string|null): ResourceRetrieverInterface<Resource> {
+  public withId(id: string | null): ResourceRetrieverInterface<Resource> {
     return this.clone(this.queryBuilder.withId(id));
   }
 
-  public filter(filter: string|null): ResourceRetrieverInterface<Resource> {
+  public filter(filter: string | null): ResourceRetrieverInterface<Resource> {
     return this.clone(this.queryBuilder.filter(filter));
   }
 
@@ -104,7 +97,7 @@ implements ResourceRetrieverInterface<Resource> {
     return this.clone(this.queryBuilder.include(include));
   }
 
-  public sort(sort: string, dir: "asc"|"desc"): ResourceRetrieverInterface<Resource> {
+  public sort(sort: string, dir: "asc" | "desc"): ResourceRetrieverInterface<Resource> {
     return this.clone(this.queryBuilder.sort(sort, dir));
   }
 

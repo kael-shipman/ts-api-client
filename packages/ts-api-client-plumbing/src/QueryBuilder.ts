@@ -1,16 +1,12 @@
-import {
-  QueryBuilderInterface,
-  SortSpec,
-  QueryData,
-} from "./Types";
+import { QueryBuilderInterface, SortSpec, QueryData } from "./Types";
 
 export class QueryBuilder implements QueryBuilderInterface {
-  protected _id: string|null = null;
-  protected _filter: unknown|null = null;
+  protected _id: string | null = null;
+  protected _filter: unknown | null = null;
   protected _include: string[] = [];
   protected _sort: SortSpec[] = [];
-  protected _pageSize: number|null = null;
-  protected _pageNumber: number|null = null;
+  protected _pageSize: number | null = null;
+  protected _pageNumber: number | null = null;
 
   public constructor(protected _resourceType: string, d?: Partial<QueryData>) {
     if (typeof d !== "undefined") {
@@ -35,34 +31,38 @@ export class QueryBuilder implements QueryBuilderInterface {
     }
   }
 
-  public withId(id: string|null): QueryBuilderInterface {
+  public withId(id: string | null): QueryBuilderInterface {
     if (this._filter !== null) {
-      throw new Error("You've passed an ID and a filter paramter. If you pass an ID, you must not pass any filter parameters.");
+      throw new Error(
+        "You've passed an ID and a filter paramter. If you pass an ID, you must not pass any filter parameters."
+      );
     }
-    return this.clone({id});
+    return this.clone({ id });
   }
 
-  public filter(filter: string|null): QueryBuilderInterface {
+  public filter(filter: string | null): QueryBuilderInterface {
     if (this._id !== null) {
-      throw new Error("You've passed a filter, but the id paramter is already set. If you pass a filter, you must not pass an id.");
+      throw new Error(
+        "You've passed a filter, but the id paramter is already set. If you pass a filter, you must not pass an id."
+      );
     }
-    return this.clone({filter});
+    return this.clone({ filter });
   }
 
   public include(include: string): QueryBuilderInterface {
-    return this.clone({include: [include]});
+    return this.clone({ include: [include] });
   }
 
-  public sort(sort: string, dir: "asc"|"desc"): QueryBuilderInterface {
-    return this.clone({sort: [[sort, dir]]});
+  public sort(sort: string, dir: "asc" | "desc"): QueryBuilderInterface {
+    return this.clone({ sort: [[sort, dir]] });
   }
 
   public pageNumber(pageNumber: number): QueryBuilderInterface {
-    return this.clone({pageNumber});
+    return this.clone({ pageNumber });
   }
 
   public pageSize(pageSize: number): QueryBuilderInterface {
-    return this.clone({pageSize});
+    return this.clone({ pageSize });
   }
 
   get value(): QueryData {
@@ -73,8 +73,8 @@ export class QueryBuilder implements QueryBuilderInterface {
       include: this._include,
       sort: this._sort,
       pageSize: this._pageSize,
-      pageNumber: this._pageNumber
-    }
+      pageNumber: this._pageNumber,
+    };
   }
 
   protected clone(d: Partial<QueryData>): QueryBuilderInterface {
@@ -111,4 +111,3 @@ export class QueryBuilder implements QueryBuilderInterface {
     return new QueryBuilder(resourceType, d);
   }
 }
-
