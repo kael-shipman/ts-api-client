@@ -24,6 +24,7 @@ export interface AddressInterface extends plumbing.Rest.JsonApi.ResourceData<"ad
 
 export interface OrderInterface {
   type: "orders";
+  id: number;
   quantity: number;
   price: number;
   ownerId: string;

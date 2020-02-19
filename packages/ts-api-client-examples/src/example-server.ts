@@ -1,6 +1,9 @@
 /**
  * This server is meant to serve the apis that the example in this repo uses. It implements a very
  * basic (that is, quick-and-dirty) sort of query against an in-memory data back-end.
+ *
+ * **This is not meant to demonstrate any principles of any kind. It is solely to fulfill the
+ * requirements of the example cli.**
  */
 
 import {
@@ -12,7 +15,7 @@ import {
   webServiceConfigValidator,
 } from "weenie-framework";
 import * as rt from "runtypes";
-import { DslQuery, DslQueryData, isQuery } from "@openfinance/dsl-queries";
+import { DslQuery, DslQueryData, isQuery, isQueryLeaf } from "@openfinance/dsl-queries";
 
 const exampleServerConfigValidator = rt.Record({
   logger: loggerConfigValidator,
@@ -32,9 +35,15 @@ const r = Weenie(
 
 r.http.get<{ userId: string }>([ "/v1/users", "/v1/users/:userId" ], async (req, res, next) => {
   const filterSpec = { fieldSpecs: { name: [ "like", "=", "!=" ] } };
-  const filter = typeof (req.query as any).filter === "string"
-    ? new DslQuery((req.query as any).filter, filterSpec)
+  const filter = typeof req.query.filter === "string"
+    ? new DslQuery(req.query.filter, filterSpec)
     : null;
+
+  const page = <{ size: number; number: number; }>req.query.page || { size: 3, number: 1 };
+  page.size = Number(page.size);
+  page.number = Number(page.number);
+  const sliceStart = (page.number - 1) * page.size;
+  const sliceEnd = sliceStart + page.size;
 
   const include = (req.query as any).include;
   if (include && include !== "addresses") {
@@ -96,14 +105,14 @@ r.http.get<{ userId: string }>([ "/v1/users", "/v1/users/:userId" ], async (req,
       return jsonapi;
     }
 
+    let doc: any;
     if (req.params.userId) {
       r.logger.info(`Getting user id ${req.params.userId}`);
       const user = db.users.find((u) => u.id === req.params.userId);
-      const doc: any = { data: user ? format(user) : null };
+      doc = { data: user ? format(user) : null };
       if (include) {
         doc.included = includes;
       }
-      return res.send(doc);
     } else if (filter) {
       r.logger.info(`Returning users for filter: ${(req.query as any).filter}`);
 
@@ -171,19 +180,24 @@ r.http.get<{ userId: string }>([ "/v1/users", "/v1/users/:userId" ], async (req,
         return f.o === "and";
       }
 
-      const doc: any = { data: db.users.filter((user) => applyFilter(filter.value!, user)).map(format) };
+      doc = {
+        data: db.users
+        .filter((user) => applyFilter(filter.value!, user))
+        .slice(sliceStart, sliceEnd)
+        .map(format)
+      };
       if (include) {
         doc.included = includes;
       }
-      return res.send(doc);
     } else {
       r.logger.info(`Returning all users`);
-      const doc: any = { data: db.users.map(format) };
+      doc = { data: db.users.slice(sliceStart, sliceEnd).map(format) };
       if (include) {
         doc.included = includes;
       }
-      return res.send(doc);
     }
+
+    return res.send(doc);
   } catch (e) {
     return res.status(500).send({
       errors: [{
@@ -193,6 +207,33 @@ r.http.get<{ userId: string }>([ "/v1/users", "/v1/users/:userId" ], async (req,
       }]
     });
   }
+});
+
+r.http.get("/v2/orders", async (req, res, next) => {
+  const filter = JSON.parse(req.query.filter || "{}");
+  if (!filter || !isQueryLeaf(filter) || filter[0] !== "ownerId" || filter[1] !== "=") {
+    return res
+      .status(400)
+      .send({
+        error: "You must pass `q=%5B%22ownerId%22%2C%22%3D%22%2C%22xxxxx%22%5D, where xxxxx is " +
+        "the id of the owner for whom you want orders.",
+      });
+  }
+
+  const page = <{ size: number; number: number; }>req.query.page || { size: 3, number: 1 };
+  page.size = Number(page.size);
+  page.number = Number(page.number);
+  const sliceStart = (page.number - 1) * page.size;
+  const sliceEnd = sliceStart + page.size;
+
+  return res
+    .status(200)
+    .send(db.orders.filter((o) => o.ownerId === filter[2]).slice(sliceStart, sliceEnd).map((o) => {
+      return {
+        type: "orders",
+        ...o,
+      }
+    }));
 });
 
 r.http.listen();

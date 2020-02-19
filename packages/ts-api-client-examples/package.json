@@ -13,11 +13,11 @@
     "api-client-plumbing": "^0.1.0",
     "prompt-sync": "^4.1.7",
     "runtypes": "^4.1.0",
-    "simple-http-client-rpn": "^0.2.0",
-    "ts-simple-interfaces": "^0.2.3"
+    "simple-http-client-rpn": "^0.3.0",
+    "ts-simple-interfaces": "^0.3.1"
   },
   "devDependencies": {
     "@types/prompt-sync": "^4.1.0",
-    "weenie-framework": "^0.1.2"
+    "weenie-framework": "^0.1.3"
   }
 }

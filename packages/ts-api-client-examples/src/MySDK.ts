@@ -4,7 +4,7 @@ import {
   AddressInterface,
   OrderInterface,
 } from "./Types";
-import { AdHocResourceRetriever } from "./AdHocResourceRetriever";
+import { AdHocResourceRetriever } from "./AdHocRequest";
 import { SimpleHttpClientRpn } from "simple-http-client-rpn";
 import { SimpleHttpClientInterface } from "ts-simple-interfaces";
 
